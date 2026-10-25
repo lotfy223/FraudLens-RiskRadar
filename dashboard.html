@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>FraudLens Risk Radar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--bd:#dbe2ef;--tx:#0f172a;--mu:#5b6b85;--teal:#0d9488;--blue:#3b66f5;--red:#e11d48;--amb:#d97706;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--card:#111a2e;--bd:#25375c;--tx:#e8edf8;--mu:#8fa0bf;--teal:#2dd4bf;--blue:#6b8cff;--red:#fb5a6e;--amb:#fbaa3c}}
+:root[data-theme="dark"]{--bg:#0b1220;--card:#111a2e;--bd:#25375c;--tx:#e8edf8;--mu:#8fa0bf;--teal:#2dd4bf;--blue:#6b8cff;--red:#fb5a6e;--amb:#fbaa3c}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 40px}
+h1{margin:0;font-size:28px}h1 b{color:var(--teal)}p.s{margin:4px 0 20px;color:var(--mu)}
+.g{display:grid;gap:14px}.k{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.c2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;box-shadow:0 0 18px color-mix(in srgb,var(--blue) 14%,transparent)}
+.card h3{margin:0 0 12px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.v{font-size:30px;font-weight:700}.v small{font-size:13px;color:var(--mu);font-weight:400;display:block}
+.r{display:grid;grid-template-columns:120px 1fr 64px;gap:8px;align-items:center;margin:8px 0;font-size:13px}
+.b{height:10px;border-radius:6px;background:color-mix(in srgb,var(--blue) 15%,transparent);overflow:hidden}.b i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--teal),var(--blue))}
+.col{display:flex;gap:10px;align-items:flex-end;height:150px}.col div{flex:1;text-align:center;font-size:12px;color:var(--mu)}.col i{display:block;background:linear-gradient(var(--red),var(--amb));border-radius:6px 6px 0 0;margin-bottom:4px}
+.t{display:flex;height:22px;border-radius:8px;overflow:hidden;margin:6px 0 10px}.t i{display:block}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:6px 4px;text-align:left;border-bottom:1px solid var(--bd)}th{color:var(--mu);font-weight:500}td:nth-child(n+2),th:nth-child(n+2){text-align:right}
+.n{font-size:12.5px;color:var(--mu);margin-top:18px}
+</style></head><body><main>
+<h1>Fraud<b>Lens</b> Risk Radar</h1><p class="s">An explainable risk score for 434K card transactions (Jan–May 2010). Every flag shows why.</p>
+<div class="g k" id="k"></div>
+<div class="g c2"><div class="card"><h3>Which signals fire</h3><div id="sg"></div></div>
+<div class="card"><h3>Risk tiers</h3><div class="t" id="tr"></div><div id="tl"></div></div>
+<div class="card"><h3>High-risk transactions per month</h3><div class="col" id="mo"></div></div>
+<div class="card"><h3>Top clients by high-risk transactions</h3><table id="tp"></table></div></div>
+<div class="g c2"><div class="card"><h3>Behavior hits by weekday × hour</h3><div id="hm"></div><p class="n" style="margin-top:8px">Travel, spike and error hits. Brighter = more. It mostly follows overall activity (peak 7am–4pm).</p></div><div class="card"><h3>Merchant types with the most flagged transactions</h3><div id="mc"></div><p class="n" style="margin-top:8px">Share rated Medium or High. Online-heavy categories score higher by design.</p></div></div>
+<p class="n">Heads-up: the source files have no fraud label, so this is a rule-based risk score, not confirmed fraud. Weights are hand-set. May 2010 is a partial month (to May 11). No card in this sample is on the dark web.</p>
+</main><script>
+var D={"n": 434252, "vol": 21283518, "hi": 336, "hiamt": 106250, "sig": {"night": 19262, "online": 47470, "error": 6646, "spike": 5269, "darkweb": 0, "travel": 2506}, "month": {"2010-01": 73, "2010-02": 70, "2010-03": 79, "2010-04": 77, "2010-05": 37}, "tier": {"Low": 417036, "Medium": 16880, "High": 336}, "top": [[1300, 6, 106], [33, 5, 49], [598, 5, 774], [490, 4, 1479], [630, 4, 1369], [989, 4, 1829], [1168, 4, 1970], [64, 3, 955]]},f=function(n){return n.toLocaleString("en-US")};
+var E={hm:[[21,22,19,19,18,31,93,131,109,116,139,121,130,131,163,131,136,84,64,83,72,64,57,42],[21,17,19,19,24,23,90,121,119,122,111,154,137,144,133,124,138,73,79,56,74,78,54,38],[18,11,20,19,26,32,91,124,118,97,118,119,109,149,144,110,131,82,64,76,62,60,67,26],[20,20,28,38,28,23,68,134,131,111,143,117,136,145,168,162,160,74,63,104,75,81,83,85],[18,16,17,18,18,30,106,119,91,94,114,155,137,142,175,146,138,93,52,66,72,54,62,45],[24,18,19,10,18,28,69,107,102,100,112,157,168,147,185,141,163,117,98,91,98,82,93,71],[29,19,23,28,27,30,104,115,121,110,120,122,118,116,154,130,140,66,62,61,72,76,74,42]],mcc:[["Digital goods & media",14.6],["Telecom services",12.2],["Local transport",10.6],["Utilities",9.6],["Tolls & bridges",6.3],["Department stores",4.6],["Family clothing",4.6],["Money transfer",3.8]]};
+var DN=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+document.getElementById("hm").innerHTML=E.hm.map(function(r,i){return '<div style="display:grid;grid-template-columns:34px repeat(24,1fr);gap:2px;margin:2px 0;font-size:11px;color:var(--mu)"><span>'+DN[i]+'</span>'+r.map(function(v,h){return '<span title="'+DN[i]+' '+h+':00 — '+v+' hits" style="height:16px;border-radius:3px;background:var(--teal);opacity:'+(0.08+0.92*v/190)+'"></span>'}).join("")+'</div>'}).join("")+'<div style="display:grid;grid-template-columns:34px repeat(24,1fr);gap:2px;font-size:10px;color:var(--mu)"><span></span>'+Array.from({length:24},function(_,h){return '<span>'+(h%6==0?h:'')+'</span>'}).join("")+'</div>';
+document.getElementById("mc").innerHTML=E.mcc.map(function(m){return '<div class="r"><span>'+m[0]+'</span><span class="b"><i style="width:'+(100*m[1]/15)+'%"></i></span><span>'+m[1]+'%</span></div>'}).join("");
+var K=[["Transactions",f(D.n),"$"+(D.vol/1e6).toFixed(1)+"M volume"],["High-risk",f(D.hi),(100*D.hi/D.n).toFixed(2)+"% of all"],["Exposed amount","$"+f(D.hiamt),"in high-risk transactions"],["Impossible travel",f(D.sig.travel),"two states within 60 min"]];
+document.getElementById("k").innerHTML=K.map(function(a){return '<div class="card"><h3>'+a[0]+'</h3><div class="v">'+a[1]+'<small>'+a[2]+'</small></div></div>'}).join("");
+var L={online:"Online",night:"Night 00–04",error:"Card error",spike:"Amount spike",travel:"Impossible travel",darkweb:"Dark web card"},mx=Math.max.apply(0,Object.values(D.sig));
+document.getElementById("sg").innerHTML=Object.keys(L).map(function(k){return '<div class="r"><span>'+L[k]+'</span><span class="b"><i style="width:'+(100*D.sig[k]/mx)+'%"></i></span><span>'+f(D.sig[k])+'</span></div>'}).join("");
+var C={Low:"var(--teal)",Medium:"var(--amb)",High:"var(--red)"};
+document.getElementById("tr").innerHTML=["Low","Medium","High"].map(function(k){return '<i style="width:'+Math.max(100*D.tier[k]/D.n,1.5)+'%;background:'+C[k]+'"></i>'}).join("");
+document.getElementById("tl").innerHTML=["Low","Medium","High"].map(function(k){return '<div class="r"><span style="color:'+C[k]+'">'+k+'</span><span></span><span>'+f(D.tier[k])+'</span></div>'}).join("");
+var mm=Math.max.apply(0,Object.values(D.month));
+document.getElementById("mo").innerHTML=Object.keys(D.month).map(function(m){return '<div><i style="height:'+(110*D.month[m]/mm)+'px"></i>'+D.month[m]+'<br>'+m.slice(5)+'/'+m.slice(2,4)+'</div>'}).join("");
+document.getElementById("tp").innerHTML='<tr><th>Client</th><th>High-risk tx</th><th>Amount</th></tr>'+D.top.map(function(r){return '<tr><td>#'+r[0]+'</td><td>'+r[1]+'</td><td>$'+f(r[2])+'</td></tr>'}).join("");
+</script></body></html>

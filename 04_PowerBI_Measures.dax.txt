@@ -1,0 +1,17 @@
+Connect Power BI to the VIEW dbo.vw_master (Import). No type changes needed.
+
+Total Transactions = COUNTROWS(vw_master)
+High-Risk Cases = CALCULATE(COUNTROWS(vw_master), vw_master[risk_tier]="High")
+High-Risk Rate % = DIVIDE([High-Risk Cases],[Total Transactions])*100
+Exposed Amount = CALCULATE(SUM(vw_master[amount]), vw_master[risk_tier]="High", vw_master[amount]>0)
+Flagged % = DIVIDE(CALCULATE(COUNTROWS(vw_master), vw_master[risk_tier]<>"Low"),[Total Transactions])*100
+Avg Risk Score = AVERAGE(vw_master[risk_score])
+Impossible Travel = SUM(vw_master[sig_travel])
+
+Signals = DATATABLE("Signal",STRING,{{"Online"},{"Night 00-04"},{"Card error"},{"Amount spike"},{"Impossible travel"},{"Dark web card"}})
+
+Signal Hits = SWITCH(SELECTEDVALUE(Signals[Signal]),
+ "Online",SUM(vw_master[sig_online]),"Night 00-04",SUM(vw_master[sig_night]),"Card error",SUM(vw_master[sig_error]),
+ "Amount spike",SUM(vw_master[sig_spike]),"Impossible travel",SUM(vw_master[sig_travel]),"Dark web card",SUM(vw_master[sig_darkweb]))
+
+Tips: sort age_group, credit_band, amount_band by themselves (the numbers in front keep order). Sort risk_tier by risk_tier_order. Sort month as text (yyyy-MM sorts correctly).
