@@ -1,8 +1,6 @@
 # FraudLens Risk Radar
 An explainable transaction-risk engine: **SQL Server → Power BI**. Every flagged transaction shows *why* it was flagged.
 
-[▶ Watch the demo video](ضع-رابط-الفيديو-هنا)
-
 ![Dashboard](overview.png)
 
 **Data:** 434,252 synthetic card transactions (Jan 1 – May 11, 2010), 6,146 cards, 2,000 clients. Three source tables (transactions, cards, users) were merged into one table in SQL Server.
@@ -35,9 +33,9 @@ Each transaction gets a 0–100 risk score from six signals, then a tier (High �
 | `01_FraudLens_RiskRadar.sql` | First version of the risk engine on the raw tables |
 | `02_Load_and_Questions.sql` | Load script and analysis questions |
 | `03_Final_Fix_and_Questions.sql` | Final clean view `vw_master` and questions |
-| `05_Dashboard_Views.sql` | 12 views, one per dashboard visual |
 | `04_PowerBI_Measures.dax.txt` | Power BI measures |
-| `dashboard.html` | Interactive web preview |
+| `05_Dashboard_Views.sql` | 12 views, one per dashboard visual |
+| `dashboard.html` | Interactive web preview (download and open in a browser) |
 
 ## Run it
 1. Load the merged table into SQL Server as `dbo.fraudlens_master`.
