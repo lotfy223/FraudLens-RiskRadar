@@ -1,6 +1,8 @@
 # FraudLens Risk Radar
 An explainable transaction-risk engine: **SQL Server → Power BI**. Every flagged transaction shows *why* it was flagged.
 
+![Cover](cover.png)
+
 ![Dashboard](overview.png)
 
 **Data:** 434,252 synthetic card transactions (Jan 1 – May 11, 2010), 6,146 cards, 2,000 clients. Three source tables (transactions, cards, users) were merged into one table in SQL Server.
